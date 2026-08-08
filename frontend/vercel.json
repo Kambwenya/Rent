@@ -1,6 +1,6 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "frontend/publi",
+  "outputDirectory": "frontend/public",
   "framework": "vite",
   "rewrites": [
     {
