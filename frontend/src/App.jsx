@@ -1,7 +1,7 @@
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
@@ -25,6 +25,25 @@ import ShowroomRoom from './pages/ShowroomRoom';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
+  const location = useLocation();
+
+  const publicPaths = [
+    '/',
+    '/home',
+    '/products',
+    '/privacy',
+    '/terms',
+    '/login',
+    '/register',
+    '/register/buyer',
+    '/forgot-password',
+    '/reset-password',
+  ];
+
+  const isPublicRoute = (pathname) => {
+    if (publicPaths.includes(pathname)) return true;
+    return pathname.startsWith('/products/');
+  };
 
   // Show loading spinner while checking app public settings or auth
   if (isLoadingPublicSettings || isLoadingAuth) {
@@ -39,8 +58,8 @@ const AuthenticatedApp = () => {
   if (authError) {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
-    } else if (authError.type === 'auth_required') {
-      // Redirect to login automatically
+    } else if (authError.type === 'auth_required' && !isPublicRoute(location.pathname)) {
+      // Only force login for protected screens; keep public landing pages accessible.
       navigateToLogin();
       return null;
     }
@@ -54,6 +73,7 @@ const AuthenticatedApp = () => {
       <Route path="/register/buyer" element={<BuyerRegister />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/" element={<Home />} />
       <Route path="/products" element={<Products />} />
       <Route path="/products/:id" element={<ProductDetail />} />

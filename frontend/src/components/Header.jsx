@@ -50,7 +50,10 @@ export default function Header() {
   return (
     <motion.header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "bg-[#0A0A0B]/90 backdrop-blur-2xl border-b border-white/5 py-2" : "bg-transparent py-4"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
-        <Link to="/" className="text-white font-bold text-lg tracking-tight">RentAlls</Link>
+        <Link to="/" className="flex items-center gap-2 text-white font-bold text-lg tracking-tight">
+          <img src="/favicon.svg" alt="RentAlls icon" className="h-6 w-6 rounded-md" />
+          <span>RentAlls</span>
+        </Link>
 
         <nav className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => (

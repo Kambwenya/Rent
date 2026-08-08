@@ -10,9 +10,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              
-
-              
+              <img src="/favicon.svg" alt="RentAlls icon" className="h-6 w-6 rounded-md" />
               <span className="text-white font-bold text-lg">RentAlls</span>
             </div>
             <p className="text-zinc-500 text-sm leading-relaxed max-w-md">
