@@ -1,15 +1,20 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "frontend/public",
-  "framework": "vite",
+  "version": 2,
+  "buildCommand": "pnpm install && pnpm run build:backend && cd Frontend/Rentalls && pnpm run build",
+  "outputDirectory": "Frontend/Rentalls/dist/public",
+  "installCommand": "pnpm install",
+  "framework": null,
   "rewrites": [
     {
-      "source": "/(.*\\.(?:svg|png|jpg|jpeg|gif|ico|webp|js|css|map|json|txt|xml|webmanifest))",
-      "destination": "/$1"
+      "source": "/api/(.*)",
+      "destination": "/api"
     },
     {
       "source": "/(.*)",
       "destination": "/index.html"
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
 }
