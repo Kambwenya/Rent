@@ -1,7 +1,7 @@
 {
   "version": 2,
   "buildCommand": "pnpm install && pnpm run build:backend && cd Frontend/Rentalls && pnpm run build",
-  "outputDirectory": "Frontend/Rentalls/dist/public",
+  "outputDirectory": "frontend/dist/assets",
   "installCommand": "pnpm install",
   "framework": null,
   "rewrites": [
