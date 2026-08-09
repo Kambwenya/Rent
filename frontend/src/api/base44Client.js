@@ -4,7 +4,7 @@
 // and `base44.integrations.Core.*` exactly as before -- only what happens
 // underneath changed: it's now our own Express API on Vercel, backed by
 // MongoDB Atlas, instead of base44's hosted backend.
-import { request, getToken, setToken } from './httpClient';
+import { request, getToken, setToken } from './httpClient.js';
 
 /**
  * @param {string} url
@@ -16,7 +16,7 @@ function requestWithBody(url, options = {}) {
 
 const ENTITY_NAMES = [
   'ChatMessage',
-//  'Client',
+  'Client',
   'Concern',
   'Notice',
   'Payment',

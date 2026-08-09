@@ -2,28 +2,41 @@
 // VITE_API_URL lets you point the frontend at a separately-hosted API;
 // leave it unset when the API is deployed on the same Vercel project
 // (requests then go to the relative "/api/..." path).
-const API_BASE = import.meta.env.VITE_API_URL || '';
+const env = /** @type {{ VITE_API_URL?: string }} */ (
+  typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env : {}
+);
+const API_BASE = env.VITE_API_URL || '';
 
 const TOKEN_KEY = 'rentalls_access_token';
 
 export function getToken() {
   try {
-    return localStorage.getItem(TOKEN_KEY);
+    if (typeof window === 'undefined' || !window.localStorage) return null;
+    return window.localStorage.getItem(TOKEN_KEY);
   } catch {
     return null;
   }
 }
 
+/**
+ * @param {string | null | undefined} token
+ */
 export function setToken(token) {
   try {
-    if (token) localStorage.setItem(TOKEN_KEY, token);
-    else localStorage.removeItem(TOKEN_KEY);
+    if (typeof window === 'undefined' || !window.localStorage) return;
+    if (token) window.localStorage.setItem(TOKEN_KEY, token);
+    else window.localStorage.removeItem(TOKEN_KEY);
   } catch {
     /* ignore (e.g. private browsing) */
   }
 }
 
 class ApiError extends Error {
+  /**
+   * @param {string} message
+   * @param {number} status
+   * @param {unknown} data
+   */
   constructor(message, status, data) {
     super(message);
     this.status = status;
@@ -31,9 +44,13 @@ class ApiError extends Error {
   }
 }
 
+/**
+ * @param {string} path
+ * @param {{ method?: string, body?: unknown, headers?: Record<string, string>, isFormData?: boolean }} [options]
+ */
 export async function request(path, { method = 'GET', body, headers = {}, isFormData = false } = {}) {
   const token = getToken();
-  const finalHeaders = { ...headers };
+  const finalHeaders = /** @type {Record<string, string>} */ ({ ...headers });
   if (!isFormData) finalHeaders['Content-Type'] = 'application/json';
   if (token) finalHeaders['Authorization'] = `Bearer ${token}`;
 
